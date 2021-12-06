@@ -1,5 +1,6 @@
 package com.example.challenge.service.impl;
 
+import com.example.challenge.dto.AlbumDto;
 import com.example.challenge.model.Album;
 import com.example.challenge.model.Photo;
 import com.example.challenge.model.User;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -49,20 +52,6 @@ public class UserServiceImpl implements UserService {
     return listPhotos;
     }
 
-    /*@Override
-    public Page<Photo> getPhotos(Long id) {
-        List<Photo> listPhotos= new ArrayList<>();
-        List<Object> listAlbumsFromApi = restTemplate.getForObject(url.concat("/users/"+id+"/albums"),List.class);
-        listAlbumsFromApi.forEach(album -> {
-            Album albumMap = modelMapper.map(album,Album.class);
-            List<Object> listPhotosFromApi= restTemplate.getForObject(url.concat("/albums/"+albumMap.getId()+"/photos"),List.class);
-            listPhotosFromApi.forEach(element ->{
-                listPhotos.add(modelMapper.map(element,Photo.class));
-            });
-        });
 
-        Pageable pageable =  PageRequest.of(0,100);
-        Page<Photo> page = new PageImpl<>(listPhotos,pageable,listPhotos.size());
-        return page;
-    }*/
+
 }
