@@ -25,4 +25,9 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getPhotos(id));
     }
 
+    @GetMapping("/page/{id}")
+    public ResponseEntity<?>getPage(@PathVariable(name="id")Long id,@RequestParam(name = "album",required = false)Long page){
+        return ResponseEntity.ok().body(userService.getPagination(id,5,page));
+    }
+
 }

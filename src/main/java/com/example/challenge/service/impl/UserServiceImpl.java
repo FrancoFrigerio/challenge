@@ -52,6 +52,31 @@ public class UserServiceImpl implements UserService {
     return listPhotos;
     }
 
-
+    @Override
+    public Map<String, Object> getPagination(Long id, Integer size, Long album) {
+        Map<String,Object> resp = new HashMap<>();
+        List<Photo> listPhotos= new ArrayList<>();
+        List<Object> listAlbumsFromApi = restTemplate.getForObject(url.concat("/users/"+id+"/albums"),List.class);
+        List<Object> listPhotosFromApi= restTemplate.getForObject(url.concat("/albums/"+album+"/photos"),List.class);
+        List<AlbumDto> listDtos = new ArrayList<>();
+        listAlbumsFromApi.forEach(e->{
+            listDtos.add(modelMapper.map(e,AlbumDto.class));
+        });
+        if(album > listDtos.get(9).getId() || album< listDtos.get(0).getId()){
+            resp.put("error rango disponible de albums","desde: "+listDtos.get(0).getId()+", hasta: "+ listDtos.get(9).getId());
+            return resp;
+        }
+        log.info("size = "+size+"  pages =" + listPhotosFromApi.size()/size);
+        listPhotosFromApi.forEach(element ->{
+            if(listPhotos.size()<size){
+                listPhotos.add(modelMapper.map(element,Photo.class));
+            }
+        });
+        resp.put("album actual",album);
+        resp.put("pagina siguiente",album+1);
+        resp.put("contenido",listPhotos);
+        resp.put("pagina anterior",album-1);
+        return resp;
+    }
 
 }
